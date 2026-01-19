@@ -1,5 +1,4 @@
-import React from "react";
+import React, { createContext, useState } from "react";
 
-const ThemeContext = React.createContext();
-
-export default ThemeContext;
+// 1. Export the context constant
+export const ThemeContext = createContext();

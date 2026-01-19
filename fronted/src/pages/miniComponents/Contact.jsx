@@ -1,12 +1,14 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
-import { FaPaperPlane } from "react-icons/fa";
+import { FaPaperPlane, FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
+import { ThemeContext } from "../../context/ThemeContext.js";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Contact = () => {
+  const { darkMode } = useContext(ThemeContext);
   const [senderName, setSenderName] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
@@ -40,105 +42,117 @@ const Contact = () => {
   };
 
   return (
-    <div
-      id="contact"
-      className="w-full min-h-screen flex flex-col items-center px-6 sm:px-12 lg:px-24 py-5 text-white bg-gray-600 pb-14"
-    >
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-center mb-12"
-      >
-        <h1 className="text-[2.5rem] sm:text-[3rem] font-extrabold tracking-wide flex items-center justify-center gap-4">
-          CONTACT
-          <span className="bg-gray-700 text-yellow-400 px-5 py-2 rounded-xl shadow-xl">
-            US
-          </span>
-        </h1>
-        <p className="text-gray-400 text-lg uppercase tracking-wide">
-          Let’s connect and discuss your insights for EventSync!
-        </p>
-      </motion.div>
+    <div id="contact" className={`w-full py-24 px-6 sm:px-12 lg:px-24 transition-colors duration-500 ${
+      darkMode ? "bg-slate-900" : "bg-white"
+    }`}>
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
+          
+          {/* Left Side: Text & Info */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }} 
+            whileInView={{ opacity: 1, x: 0 }} 
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className={`text-5xl font-black mb-6 ${darkMode ? "text-white" : "text-slate-900"}`}>
+              Let’s Build Something <br />
+              <span className="text-blue-500">Together.</span>
+            </h2>
+            <p className={`text-lg mb-10 ${darkMode ? "text-slate-400" : "text-slate-600"}`}>
+              Have questions about EventSync? Our team is here to help you streamline your event management experience.
+            </p>
 
-      {/* Contact Form */}
-      <motion.form
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        onSubmit={handleMessage}
-        className="w-full max-w-lg bg-gray-800 backdrop-blur-md shadow-xl border border-gray-600 p-6 sm:p-10 rounded-2xl flex flex-col gap-6"
-      >
-        {/* Name */}
-        <div className="flex flex-col gap-2">
-          <label className="text-lg font-semibold">Your Name</label>
-          <input
-            type="text"
-            value={senderName}
-            onChange={(e) => setSenderName(e.target.value)}
-            placeholder="Enter your name"
-            className="rounded-lg p-3 border border-gray-500 shadow-sm focus:ring-2 focus:ring-cyan-400 transition bg-gray-900 text-white placeholder-gray-500"
-          />
-        </div>
+            <div className="space-y-6">
+              {[
+                { icon: <FaEnvelope />, label: "Email Us", val: "support@eventsync.com" },
+                { icon: <FaPhoneAlt />, label: "Call Us", val: "+1 (555) 000-0000" },
+                { icon: <FaMapMarkerAlt />, label: "Office", val: "New Delhi, India" }
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <div className={`p-4 rounded-xl ${darkMode ? "bg-slate-800 text-blue-400" : "bg-blue-50 text-blue-600"}`}>
+                    {item.icon}
+                  </div>
+                  <div>
+                    <p className={`text-sm font-bold uppercase tracking-widest ${darkMode ? "text-slate-500" : "text-slate-400"}`}>{item.label}</p>
+                    <p className={`text-lg font-semibold ${darkMode ? "text-white" : "text-slate-800"}`}>{item.val}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
 
-        {/* Subject */}
-        <div className="flex flex-col gap-2">
-          <label className="text-lg font-semibold">Subject</label>
-          <input
-            type="text"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            placeholder="Enter subject"
-            className="rounded-lg p-3 border border-gray-500 shadow-sm focus:ring-2 focus:ring-cyan-400 transition bg-gray-900 text-white placeholder-gray-500"
-          />
-        </div>
+          {/* Right Side: The Form */}
+          <motion.form
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            onSubmit={handleMessage}
+            className={`p-8 rounded-3xl border shadow-2xl space-y-6 ${
+              darkMode ? "bg-slate-800 border-slate-700 shadow-blue-900/10" : "bg-white border-slate-100 shadow-slate-200"
+            }`}
+          >
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className={`text-sm font-bold ${darkMode ? "text-slate-300" : "text-slate-700"}`}>Name</label>
+                <input
+                  type="text"
+                  value={senderName}
+                  onChange={(e) => setSenderName(e.target.value)}
+                  placeholder="John Doe"
+                  className={`w-full p-4 rounded-xl border outline-none transition-all ${
+                    darkMode 
+                    ? "bg-slate-900 border-slate-700 text-white focus:border-blue-500" 
+                    : "bg-slate-50 border-slate-200 text-slate-900 focus:border-blue-500"
+                  }`}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className={`text-sm font-bold ${darkMode ? "text-slate-300" : "text-slate-700"}`}>Subject</label>
+                <input
+                  type="text"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  placeholder="Inquiry"
+                  className={`w-full p-4 rounded-xl border outline-none transition-all ${
+                    darkMode 
+                    ? "bg-slate-900 border-slate-700 text-white focus:border-blue-500" 
+                    : "bg-slate-50 border-slate-200 text-slate-900 focus:border-blue-500"
+                  }`}
+                />
+              </div>
+            </div>
 
-        {/* Message */}
-        <div className="flex flex-col gap-2">
-          <label className="text-lg font-semibold">Message</label>
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Write your message here..."
-            rows="4"
-            className="w-full border p-3 rounded-lg border-gray-500 shadow-sm focus:ring-2 focus:ring-blue-400 transition bg-gray-900 text-white placeholder-gray-500"
-          ></textarea>
-        </div>
+            <div className="space-y-2">
+              <label className={`text-sm font-bold ${darkMode ? "text-slate-300" : "text-slate-700"}`}>Message</label>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="How can we help?"
+                rows="5"
+                className={`w-full p-4 rounded-xl border outline-none transition-all resize-none ${
+                  darkMode 
+                  ? "bg-slate-900 border-slate-700 text-white focus:border-blue-500" 
+                  : "bg-slate-50 border-slate-200 text-slate-900 focus:border-blue-500"
+                }`}
+              ></textarea>
+            </div>
 
-        {/* Send Button */}
-        <div className="flex justify-center">
-          {!loading ? (
             <button
+              disabled={loading}
               type="submit"
-              className="w-full sm:w-48 bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-600 hover:to-gray-800 transition-all duration-300 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 shadow-lg"
+              className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-blue-500/30 disabled:opacity-50"
             >
-              <FaPaperPlane /> SEND MESSAGE
+              {loading ? (
+                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              ) : (
+                <>
+                  <FaPaperPlane /> SEND MESSAGE
+                </>
+              )}
             </button>
-          ) : (
-            <button
-              disabled
-              className="w-full sm:w-48 flex items-center justify-center bg-gray-600 text-gray-300 rounded-lg px-4 py-3 shadow-md"
-            >
-              <svg
-                className="w-5 h-5 mr-2 animate-spin"
-                viewBox="0 0 100 101"
-                fill="none"
-              >
-                <path
-                  d="M100 50.6C100 78.2 77.6 100.6 50 100.6C22.4 100.6 0 78.2 0 50.6C0 22.98 22.4 0.6 50 0.6C77.6 0.6 100 22.98 100 50.6Z"
-                  fill="#E5E7EB"
-                />
-                <path
-                  d="M93.97 39.04C96.39 38.4 97.86 35.91 97.01 33.55C95.29 28.82 92.87 24.37 89.82 20.35C85.85 15.12 80.88 10.72 75.21 7.41C69.54 4.1 63.28 1.94 56.77 1.05C51.77 0.37 46.7 0.45 41.73 1.28C39.26 1.69 37.81 4.2 38.45 6.62C39.09 9.05 41.57 10.47 44.05 10.11C47.85 9.55 51.72 9.53 55.54 10.05C60.86 10.78 65.99 12.55 70.63 15.26C75.27 17.96 79.33 21.56 82.58 25.84C84.92 28.91 86.8 32.5 88.15 36.4C88.95 38.8 91.45 39.7 93.97 39.04Z"
-                  fill="currentColor"
-                />
-              </svg>
-              Sending...
-            </button>
-          )}
+          </motion.form>
         </div>
-      </motion.form>
+      </div>
     </div>
   );
 };

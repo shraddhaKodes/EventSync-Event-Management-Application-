@@ -1,54 +1,96 @@
-import React from "react";
-import { FaLinkedin, FaGithub, FaTwitter, FaCalendarCheck } from "react-icons/fa";
+import React, { useContext } from "react";
+import { FaLinkedin, FaGithub, FaTwitter, FaCalendarCheck, FaArrowUp } from "react-icons/fa";
+import { ThemeContext } from "../../context/ThemeContext.js";
 
 const Footer = () => {
+  const { darkMode } = useContext(ThemeContext);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <footer className="w-full bg-gradient-to-b from-gray-700 to-gray-900 text-white py-8 px-6 sm:px-12">
+    <footer className={`w-full pt-16 pb-8 px-6 sm:px-12 transition-colors duration-500 border-t ${
+      darkMode 
+      ? "bg-slate-950 text-white border-slate-800" 
+      : "bg-white text-slate-900 border-slate-200"
+    }`}>
       
-      {/* Top Section */}
-      <div className="max-w-[1050px] mx-auto text-center">
-        <hr className="border-gray-600 mb-5" />
-        <div className="flex flex-col items-center sm:flex-row sm:items-center sm:justify-center gap-2">
-          <FaCalendarCheck className="text-blue-400 text-3xl sm:text-4xl" />
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-wide text-blue-400 animate-pulse">
-            Thanks for Visiting EventSync
-          </h1>
-        </div>
-        <p className="text-gray-400 text-sm sm:text-md mt-2">
-          Crafted with <span className="text-red-500">❤️</span> by Shraddha Kumari | Connecting People, One Event at a Time
-        </p>
-      </div>
+      <div className="max-w-7xl mx-auto">
+        {/* Top Grid Section */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          
+          {/* Brand Column */}
+          <div className="col-span-1 md:col-span-1 space-y-4">
+            <div className="flex items-center gap-2">
+              <FaCalendarCheck className="text-blue-500 text-3xl" />
+              <h2 className="text-2xl font-black tracking-tighter">EventSync</h2>
+            </div>
+            <p className={`text-sm leading-relaxed ${darkMode ? "text-slate-400" : "text-slate-500"}`}>
+              Simplifying the way you plan, track, and execute events globally. Join thousands of creators today.
+            </p>
+          </div>
 
-      {/* Footer Links & Socials */}
-      <div className="max-w-[1050px] mx-auto mt-6 flex flex-col sm:flex-row justify-between items-center text-gray-400 text-sm gap-4">
-        
-        {/* Quick Links */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 text-center sm:text-left">
-          <a href="#about" className="hover:text-blue-400 transition">About Us</a>
-          <a href="#contact" className="hover:text-blue-400 transition">Contact</a>
-          <a href="/privacy" className="hover:text-blue-400 transition">Privacy Policy</a>
-          <a href="/terms" className="hover:text-blue-400 transition">Terms & Conditions</a>
+          {/* Links Columns */}
+          <div>
+            <h4 className="font-bold mb-4 uppercase text-xs tracking-widest text-blue-500">Platform</h4>
+            <ul className={`space-y-2 text-sm ${darkMode ? "text-slate-400" : "text-slate-600"}`}>
+              <li className="hover:text-blue-500 cursor-pointer transition">Events</li>
+              <li className="hover:text-blue-500 cursor-pointer transition">Ticketing</li>
+              <li className="hover:text-blue-500 cursor-pointer transition">Analytics</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold mb-4 uppercase text-xs tracking-widest text-blue-500">Company</h4>
+            <ul className={`space-y-2 text-sm ${darkMode ? "text-slate-400" : "text-slate-600"}`}>
+              <li className="hover:text-blue-500 cursor-pointer transition">About Us</li>
+              <li className="hover:text-blue-500 cursor-pointer transition">Privacy Policy</li>
+              <li className="hover:text-blue-500 cursor-pointer transition">Terms of Service</li>
+            </ul>
+          </div>
+
+          {/* Newsletter/Social */}
+          <div className="space-y-4">
+            <h4 className="font-bold mb-4 uppercase text-xs tracking-widest text-blue-500">Socials</h4>
+            <div className="flex gap-4">
+              {[
+                { icon: <FaLinkedin />, link: "https://linkedin.com/in/shraddhakodes" },
+                { icon: <FaGithub />, link: "https://github.com/shraddhakodes" },
+                { icon: <FaTwitter />, link: "https://twitter.com/shraddhakodes" }
+              ].map((social, i) => (
+                <a 
+                  key={i}
+                  href={social.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className={`p-3 rounded-xl transition-all ${
+                    darkMode ? "bg-slate-900 hover:bg-blue-600" : "bg-slate-100 hover:bg-blue-600 hover:text-white"
+                  }`}
+                >
+                  {social.icon}
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Social Media */}
-        <div className="flex gap-5 mt-4 sm:mt-0">
-          <a href="https://linkedin.com/in/shraddhakodes" target="_blank" rel="noopener noreferrer" className="text-2xl hover:text-blue-500 transition">
-            <FaLinkedin />
-          </a>
-          <a href="https://github.com/shraddhakodes" target="_blank" rel="noopener noreferrer" className="text-2xl hover:text-gray-300 transition">
-            <FaGithub />
-          </a>
-          <a href="https://twitter.com/shraddhakodes" target="_blank" rel="noopener noreferrer" className="text-2xl hover:text-blue-400 transition">
-            <FaTwitter />
-          </a>
+        {/* Bottom Bar */}
+        <div className={`pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4 ${
+          darkMode ? "border-slate-800" : "border-slate-100"
+        }`}>
+          <p className="text-xs font-medium text-slate-500">
+            © {new Date().getFullYear()} EventSync. Developed by <span className="text-blue-500">Shraddha Kumari</span>
+          </p>
+          
+          <button 
+            onClick={scrollToTop}
+            className={`flex items-center gap-2 text-xs font-bold uppercase tracking-tighter hover:text-blue-500 transition-all`}
+          >
+            Back to top <FaArrowUp />
+          </button>
         </div>
       </div>
-      
-      {/* Bottom Section */}
-      <div className="text-center text-gray-500 text-xs mt-6">
-        © {new Date().getFullYear()} EventSync. All Rights Reserved.
-      </div>
-      
     </footer>
   );
 };

@@ -9,3 +9,6 @@ export default defineConfig({
     "import.meta.env.VITE_API_BASE_URL": JSON.stringify("https://eventsync-backend-22b9.onrender.com/api/v1"),
   },
 })
+
+//http://localhost:4000/api/v1
+//VITE_API_BASE_URL=https://eventsync-backend-22b9.onrender.com/api/v1
