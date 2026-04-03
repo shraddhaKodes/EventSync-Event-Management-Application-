@@ -9,6 +9,7 @@ import userRouter from "./routes/userRouter.js";
 import messageRouter from "./routes/messageRouter.js";
 import EventRouter from "./routes/EventRouter.js";
 import RsvpRouter from "./routes/RsvpRouter.js";
+import PaymentRouter from  "./routes/PaymentRouter.js";
 const app = express();
 dotenv.config({ path: "./config/config.env" });
 
@@ -33,6 +34,9 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/event",EventRouter);
 app.use("/api/v1/rsvp",RsvpRouter) ;
+app.use("/api/v1/payment",PaymentRouter) ;
+
+
 dbConnection();
 app.use(errorMiddleware);
 

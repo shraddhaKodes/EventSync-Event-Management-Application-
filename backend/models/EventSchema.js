@@ -23,7 +23,7 @@ const eventSchema = new mongoose.Schema(
     },
     medium: {
       type: String,
-      enum: ["All","Online", "In Person"],
+      enum: ["All", "Online", "In Person"],
       required: [true, "Event medium is required!"],
     },
     startDateTime: {
@@ -105,6 +105,17 @@ const eventSchema = new mongoose.Schema(
       url: {
         type: String,
         required: true,
+      },
+    },
+    isPaid: {
+      type: Boolean,
+      default: false, // Free by default
+    },
+    price: {
+      type: Number,
+      min: [0, "Price cannot be negative!"],
+      required: function () {
+        return this.isPaid;
       },
     },
   },

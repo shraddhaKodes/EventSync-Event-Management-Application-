@@ -73,7 +73,6 @@ const Navbar = () => {
                 ))
               )}
             </ul>
-            <div className="h-6 w-[1px] bg-slate-700/30"></div>
           </div>
 
           {/* Right Section Buttons */}

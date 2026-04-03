@@ -4,12 +4,16 @@ import ErrorHandler from "../middlewares/error.js";
 import { v2 as cloudinary } from "cloudinary";
 // ✅ Create Event
 export const createEvent = catchAsyncErrors(async (req, res, next) => {
-  const { title, description, privacy, medium, startDateTime, category } = req.body;
-   // Ensure maxParticipants is a single number
-   const maxParticipants = Array.isArray(req.body.maxParticipants) 
-   ? Number(req.body.maxParticipants[0]) // Take only the first value
-   : Number(req.body.maxParticipants);
-  console.log(req.body) ;
+  const { title, description, privacy, medium, startDateTime, category, isPaid, price } = req.body;
+
+  // Ensure maxParticipants is a single number
+  const maxParticipants = Array.isArray(req.body.maxParticipants) 
+    ? Number(req.body.maxParticipants[0]) // Take only the first value
+    : Number(req.body.maxParticipants);
+
+  console.log(req.body);
+  
+  // Check required fields
   if (!title || !description || !privacy || !medium || !startDateTime || !category || !maxParticipants) {
     return next(new ErrorHandler("All required fields must be filled!", 400));
   }
@@ -25,17 +29,28 @@ export const createEvent = catchAsyncErrors(async (req, res, next) => {
     folder: "EventSync/Events",
   });
 
-  const newEvent = await Event.create({
+  // Prepare event data
+  const eventData = {
     ...req.body,
     userId: req.user._id,
     featureImage: {
       public_id: uploadedImage.public_id,
       url: uploadedImage.secure_url,
     },
-  });
+    maxParticipants,
+  };
+
+  // If isPaid exists, add it to eventData
+  if (isPaid) {
+    eventData.isPaid = isPaid === "true"; // Convert string to boolean
+    eventData.price = eventData.isPaid ? Number(price) : 0; // Convert price to number if event is paid
+  }
+
+  const newEvent = await Event.create(eventData);
 
   res.status(201).json({ success: true, message: "Event created successfully!", event: newEvent });
 });
+
 
 // ✅ Get all events with filtering by category and medium
 export const getAllEvents = catchAsyncErrors(async (req, res, next) => {

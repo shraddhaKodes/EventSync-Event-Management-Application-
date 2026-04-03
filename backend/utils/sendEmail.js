@@ -33,7 +33,7 @@ export async function verifyEmail(email) {
   }
 }
 
-export async function sendEmail(to, subject, text) {
+export async function sendEmail(to, subject, html) {
   const transporter = nodemailer.createTransport({
     host: process.env.HOST,
     service: process.env.SERVICE,
@@ -50,7 +50,7 @@ export async function sendEmail(to, subject, text) {
       from: process.env.EMAIL,
       to,
       subject,
-      text,
+      html,
     });
     console.log("Email sent successfully");
   } catch (error) {

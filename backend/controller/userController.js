@@ -43,7 +43,46 @@ export const register = catchAsyncErrors(async (req, res, next) => {
 
   // **🔹 Send Registration Confirmation Email**
   const emailSubject = "Welcome to Our Platform!";
-  const emailMessage = `Hello ${fullName},\n\nWelcome to our platform! Your registration was successful.\n\nBest Regards,\nTeam`;
+ const emailMessage = `
+  <div style="font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 30px;">
+    
+    <div style="max-width: 500px; margin: auto; background: #ffffff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+      
+      <h2 style="color: #2c3e50; text-align: center;">🎉 Welcome to EventSync</h2>
+      
+      <p style="font-size: 16px; color: #555;">
+        Hi <b>${fullName}</b>,
+      </p>
+      
+      <p style="font-size: 15px; color: #555;">
+        Your account has been successfully created. You’re now ready to explore and join amazing events!
+      </p>
+
+      <div style="text-align: center; margin: 25px 0;">
+        <a href="#" style="background-color: #3399cc; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; font-size: 14px;">
+          Explore Events
+        </a>
+      </div>
+
+      <p style="font-size: 14px; color: #777;">
+        Discover events, connect with people, and never miss out on opportunities.
+      </p>
+
+      <hr style="margin: 20px 0;" />
+
+      <p style="font-size: 13px; color: #999; text-align: center;">
+        If you didn’t sign up for this account, please ignore this email.
+      </p>
+
+      <p style="font-size: 14px; color: #333; margin-top: 20px;">
+        Best Regards,<br/>
+        <b>Team EventSync</b>
+      </p>
+
+    </div>
+
+  </div>
+`;
 
   console.log("try to send message");
   await sendEmail(email, emailSubject, emailMessage);
@@ -195,7 +234,7 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const resetPasswordUrl = `${process.env.DASHBOARD_URL}/password/reset/${resetToken}`;
 
   // **Email Content**
-  const emailSubject = "STOCK_TRACKER Password Recovery";
+  const emailSubject = "EventSync Password Recovery";
   const emailMessage = `Hello ${user.fullName},\n\nYou requested a password reset. Click the link below to reset your password:\n\n${resetPasswordUrl}\n\nIf you did not request this, please ignore this email.\n\nBest Regards,\nTeam`;
 
   console.log(`📩 Sending password reset email to: ${user.email}`);

@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react() , tailwindcss()],
   define: {
-    "import.meta.env.VITE_API_BASE_URL": JSON.stringify("https://eventsync-backend-22b9.onrender.com/api/v1"),
+    "import.meta.env.VITE_API_BASE_URL": JSON.stringify("http://localhost:4000/api/v1"),
   },
 })
 
