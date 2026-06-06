@@ -6,7 +6,7 @@ import { ThemeContext } from "../context/ThemeContext";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const YourEvent = () => {
-    const { darkMode, setDarkMode } = useContext(ThemeContext);
+  const { darkMode, setDarkMode } = useContext(ThemeContext);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,7 +41,9 @@ const YourEvent = () => {
 
   // ✅ Handle Delete Function
   const handleDelete = async (eventId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this event?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this event?",
+    );
     if (!confirmDelete) return;
 
     try {
@@ -61,81 +63,70 @@ const YourEvent = () => {
   if (loading) return <p>Loading events...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
-return (
-  <div
-    className={`p-6 transition-all duration-300 ${
-      darkMode ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"
-    }`}
-  >
-    {events.length === 0 ? (
-      <p className={`${darkMode ? "text-gray-400" : "text-gray-600"}`}>
-        No events found.
-      </p>
-    ) : (
-      <ul className="space-y-4">
-        {events.map((event) => (
-          <li
-            key={event._id}
-            className={`flex items-center p-4 rounded-xl shadow-md transition-all duration-300
-            ${
-              darkMode
-                ? "bg-gray-900 hover:bg-gray-800"
-                : "bg-white hover:bg-gray-100"
-            }`}
-          >
-            {/* Event Image */}
-            <img
-              src={event.featureImage?.url}
-              alt={event.title}
-              className="w-16 h-16 object-cover rounded-lg"
-            />
-
-            {/* Event Details */}
-            <div
-              className="ml-4 flex-1 cursor-pointer"
-              onClick={() => navigate(`/event/${event._id}`)}
+  return (
+    <div
+      className={`p-6 transition-all duration-300 ${
+        darkMode ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"
+      }`}
+    >
+      {events.length === 0 ? (
+        <p className={`${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+          No events found.
+        </p>
+      ) : (
+        <ul className="space-y-4">
+          {events.map((event) => (
+            <li
+              key={event._id}
+              className={`flex flex-col sm:flex-row gap-4 p-4 rounded-xl shadow-md
+  ${darkMode ? "bg-gray-900 hover:bg-gray-800" : "bg-white hover:bg-gray-100"}`}
             >
-              <h2 className="text-lg font-semibold">{event.title}</h2>
+              <img
+                src={event.featureImage?.url}
+                alt={event.title}
+                className="w-full sm:w-16 h-40 sm:h-16 object-cover rounded-lg"
+              />
 
-              <p
-                className={`text-sm ${
-                  darkMode ? "text-gray-400" : "text-gray-600"
-                }`}
-              >
-                📅 {event.date}
-              </p>
-
-              <p
-                className={`text-sm line-clamp-2 ${
-                  darkMode ? "text-gray-300" : "text-gray-700"
-                }`}
-              >
-                {event.description}
-              </p>
-            </div>
-
-            {/* Actions */}
-            <div className="flex gap-3">
-              <button
+              <div
+                className="flex-1 cursor-pointer"
                 onClick={() => navigate(`/event/${event._id}`)}
-                className="transition"
               >
-                <FaEdit className="text-blue-500 hover:text-blue-400 text-lg" />
-              </button>
+                <h2 className="text-lg font-semibold break-words">
+                  {event.title}
+                </h2>
 
-              <button
-                onClick={() => handleDelete(event._id)}
-                className="transition"
-              >
-                <FaTrash className="text-red-500 hover:text-red-400 text-lg" />
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
-);
+                <p
+                  className={`text-sm ${
+                    darkMode ? "text-gray-400" : "text-gray-600"
+                  }`}
+                >
+                  📅 {event.date}
+                </p>
+
+                <p
+                  className={`text-sm break-words ${
+                    darkMode ? "text-gray-300" : "text-gray-700"
+                  }`}
+                >
+                  {event.description}
+                </p>
+              </div>
+
+              <div className="flex justify-end gap-4">
+                <button onClick={() => navigate(`/event/${event._id}`)}>
+                  <FaEdit className="text-blue-500 text-lg" />
+                </button>
+
+                <button onClick={() => handleDelete(event._id)}>
+                  <FaTrash className="text-red-500 text-lg" />
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 };
 
 export default YourEvent;
