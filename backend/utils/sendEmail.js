@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import nodemailer from "nodemailer";
 import fetch from "node-fetch";
 
 dotenv.config();
@@ -20,49 +19,73 @@ export async function verifyEmail(email) {
       data.status === "invalid" &&
       data.sub_status === "mailbox_not_found"
     ) {
-      console.log(`Invalid email: ${email}`);
+      console.log(`The email ${email} is invalid: mailbox not found.`);
       return false;
     }
 
     if (data.status === "valid") {
-      console.log(`Valid email: ${email}`);
+      console.log(`The email ${email} is valid.`);
       return true;
     }
 
+    console.log(`The email ${email} is invalid.`);
     return false;
   } catch (error) {
-    console.error("Email verification error:", error);
+    console.error("Error verifying email:", error);
     return false;
   }
 }
 
 /**
- * Send email using Mailtrap SMTP
+ * Send email using Brevo API
  */
 export async function sendEmail(to, subject, html) {
-  try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.HOST,
-      port: Number(process.env.EMAIL_PORT),
-      secure: process.env.SECURE === "true",
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD,
+  const brevoApiKey = process.env.BREVO_API_KEY;
+  const senderEmail = process.env.EMAIL_USER;
+
+  if (!brevoApiKey || !senderEmail) {
+    throw new Error(
+      "Missing BREVO_API_KEY or EMAIL_USER in environment variables."
+    );
+  }
+
+  const payload = {
+    sender: {
+      name: "EventSync Team",
+      email: senderEmail,
+    },
+    to: [
+      {
+        email: to,
       },
-    });
+    ],
+    subject,
+    htmlContent: html,
+  };
 
-    await transporter.verify();
+  try {
+    const response = await fetch(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "api-key": brevoApiKey,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
 
-    await transporter.sendMail({
-      from: `"EventSync" <${process.env.EMAIL}>`,
-      to,
-      subject,
-      html,
-    });
+    const result = await response.json();
 
-    console.log(`Email sent successfully to ${to}`);
+    if (!response.ok) {
+      throw new Error(JSON.stringify(result));
+    }
+
+    console.log(`Email successfully sent to ${to}`);
+    return result;
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Brevo Email Error:", error.message);
     throw new Error("Email not sent");
   }
 }
