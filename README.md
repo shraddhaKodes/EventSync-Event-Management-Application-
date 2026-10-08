@@ -2,7 +2,7 @@
 
 ### 📌 Project Overview
 **EventSync** is a professional-grade, full-stack platform designed to revolutionize how global events are tracked, managed, and scaled. It serves as an all-in-one ecosystem that bridges the gap between event creators and attendees through real-time analytics, secure financial transactions, and automated communication workflows.
-
+### Live Link : https://eventsync-madewith-love.netlify.app/
 ### 🚀 Tech Stack
 * **Frontend:** React.js, Tailwind CSS
 * **Backend:** Node.js, Express.js
